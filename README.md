@@ -1,83 +1,72 @@
-# Project 1: Guessing Game
+Guessing Game — DS210 Project 1
 
-### Getting started
+A number guessing game written in Rust where the computer tries to guess a number you picked. The core idea is to implement and compare different guessing strategies — from a dumb random guesser to an optimal one — and then run experiments to see how they actually perform.
 
-Run the simplest version of this game using the following command, then follow the instructions on the screen.
 
-```bash
-cargo run --bin game -- --strategy random
-```
+How it works
 
-For example, here is a transcript from when I ran the game. In this run, I chose `6` as my number!
-```
-Choose a number between 0 (inclusive) and 16 (exclusive).
-Write down your number on a piece of paper so you remember what it is.
-Do not tell me what your number is. I will try to guess it.
-Did you choose a number? Hit enter when you have! 
+You pick a number between 0 and 16, write it down so you don't cheat yourself, and the program tries to guess it by asking yes/no questions. The interesting part is how it chooses what to guess — that's the strategy.
 
-Commencing game!
-Is your number equal to 5 [y/n]? 
-n
-Is your number equal to 9 [y/n]? 
-n
-Is your number equal to 4 [y/n]? 
-n
-Is your number equal to 4 [y/n]? 
-n
-Is your number equal to 10 [y/n]? 
-n
-Is your number equal to 12 [y/n]? 
-n
-Is your number equal to 7 [y/n]? 
-n
-Is your number equal to 13 [y/n]? 
-n
-Is your number equal to 4 [y/n]? 
-n
-Is your number equal to 7 [y/n]? 
-n
-Is your number equal to 2 [y/n]? 
-n
-Is your number equal to 2 [y/n]? 
-n
-Is your number equal to 6 [y/n]? 
-y
-Final answer: 6
-Took 13 steps
-```
+The repo comes with two example strategies to show the structure:
 
-### Adding your solution
 
-You should add your solution code to `src/part1.rs`, `src/part2.rs`, and `src/part3.rs`.
+BadStrategy — asks if the number is min, then jumps straight to max - 1. Absolutely terrible, but it compiles.
+RandomStrategy — keeps guessing randomly until it hits. Also terrible, but in a more chaotic way.
 
-**Do not change any other files!**. Our auto grader is configured to only use your solution files and will not look at or use any changes you make to other files.
 
-### Running and testing your code
+Your job (parts 1–3) is to implement strategies that actually work well.
 
-**Parts 1 and 2:** You can run your solutions to part1 and part2 using these commands:
-```bash
-cargo run --bin game -- --strategy part1
+
+Project structure
+
+├── game.rs          # main game loop + CLI
+├── player.rs        # Player struct that tracks guesses and answers
+├── strategies.rs    # BadStrategy and RandomStrategy (provided examples)
+├── part1.rs         # your solution for part 1
+├── part2.rs         # your solution for part 2
+├── part3.rs         # your solution for part 3
+├── experiment.rs    # runs experiments and generates a performance plot
+└── Cargo.toml
+
+
+Running the game
+
+To play with the random strategy (just to see how it works):
+
+bashcargo run --bin game -- --strategy random
+
+To test your own implementations:
+
+bashcargo run --bin game -- --strategy part1
 cargo run --bin game -- --strategy part2
-```
 
-**Part 3:** After adding your code to part 3, you can run your tests using:
-```bash
-cargo test --bin game -- --test-threads 1
-```
 
-This will run all the tests. You may want to run separate test groups at a time to make it easier to understand what is going on.
-In that case, we suggest using these commands one at a time.
-```bash
-cargo test --bin game bad_strategy -- --test-threads=1
+Testing
+
+Parts 1 and 2 are tested manually by running the game. For part 3, there's an actual test suite:
+
+bashcargo test --bin game -- --test-threads 1
+
+If you want to isolate specific test groups instead of running everything at once:
+
+bashcargo test --bin game bad_strategy -- --test-threads=1
 cargo test --bin game part1 -- --test-threads=1
 cargo test --bin game part2 -- --test-threads=1
-```
 
-**Part 4:** After adding your code to part 3, you can run the experiment using this command. The output plot will be in `plot.png`.
-```bash
-cargo run --bin experiment
-```
+Running with --test-threads 1 keeps the output readable — parallel test output gets messy fast.
 
-### Submitting your solution
 
+Experiments (Part 4)
+
+After finishing part 3, you can run the experiment binary to benchmark how different strategies compare across many trials. It outputs a plot to plot.png:
+
+bashcargo run --bin experiment
+
+
+Notes
+
+
+Don't touch any files outside of part1.rs, part2.rs, and part3.rs. The autograder only looks at those three files and ignores everything else.
+The Player struct in player.rs handles tracking guesses — your strategy just needs to implement the Strategy trait and call player.ask_if_equal().
+The optimal strategy for a range of size N should find the number in at most ⌈log₂(N)⌉ guesses. The random strategy... will not do that.
 Follow the instructions on gradescope. **Make sure you submitted the correct file for each part!**
