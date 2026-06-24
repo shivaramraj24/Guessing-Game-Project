@@ -13,22 +13,6 @@ The repo comes with two example strategies to show the structure:
 BadStrategy — asks if the number is min, then jumps straight to max - 1. Absolutely terrible, but it compiles.
 RandomStrategy — keeps guessing randomly until it hits. Also terrible, but in a more chaotic way.
 
-
-Your job (parts 1–3) is to implement strategies that actually work well.
-
-
-Project structure
-
-├── game.rs          # main game loop + CLI
-├── player.rs        # Player struct that tracks guesses and answers
-├── strategies.rs    # BadStrategy and RandomStrategy (provided examples)
-├── part1.rs         # your solution for part 1
-├── part2.rs         # your solution for part 2
-├── part3.rs         # your solution for part 3
-├── experiment.rs    # runs experiments and generates a performance plot
-└── Cargo.toml
-
-
 Running the game
 
 To play with the random strategy (just to see how it works):
